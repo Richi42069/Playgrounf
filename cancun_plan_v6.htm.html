@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cancún V6 Unicorn</title>
+
+<style>
+body{font-family:-apple-system,sans-serif;margin:0;background:#0f172a;color:#e2e8f0;}
+header{padding:16px;text-align:center;background:#020617;font-weight:bold;}
+.card{background:#020617;padding:14px;margin:12px;border-radius:12px;}
+button{background:#38bdf8;border:none;padding:12px;border-radius:10px;margin:6px 0;width:100%;}
+.swipe{font-size:18px;text-align:center;margin-top:10px;}
+</style>
+</head>
+
+<body>
+
+<header>🦄 Cancún V6 Unicorn Startup</header>
+
+<div class="card">
+<h3>🎯 Plan tipo swipe</h3>
+<p id="plan">Desliza (botones)</p>
+<button onclick="nextPlan()">Siguiente plan ➡️</button>
+<button onclick="likePlan()">Me gusta ❤️</button>
+</div>
+
+<div class="card">
+<h3>🗺️ Navegación</h3>
+<button onclick="goMap()">Ir a ubicación actual del plan</button>
+</div>
+
+<div class="card">
+<h3>💰 Presupuesto pareja</h3>
+<p id="budget">$0 MXN</p>
+<button onclick="addCost(200)">+200</button>
+<button onclick="addCost(500)">+500</button>
+<button onclick="reset()">Reset</button>
+</div>
+
+<script>
+let plans = [
+"🌮 Los de Pescado",
+"🏝️ Isla Mujeres",
+"🌅 Playa Delfines",
+"🌆 Palapas noche",
+"🍤 Fish Fritanga"
+];
+
+let index = 0;
+let total = 0;
+
+function nextPlan(){
+index = (index + 1) % plans.length;
+document.getElementById('plan').innerText = plans[index];
+}
+
+function likePlan(){
+alert('Guardado: ' + plans[index]);
+}
+
+function goMap(){
+let q = plans[index];
+window.open("https://www.google.com/maps/search/" + q);
+}
+
+function addCost(val){
+total += val;
+document.getElementById('budget').innerText = "$" + total + " MXN";
+}
+
+function reset(){
+total = 0;
+document.getElementById('budget').innerText = "$0 MXN";
+}
+
+document.getElementById('plan').innerText = plans[0];
+</script>
+
+</body>
+</html>
