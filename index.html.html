@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cancún AI Black</title>
+
+<style>
+body{
+  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  margin:0;
+  background:#000;
+  color:#fff;
+}
+
+header{
+  padding:18px;
+  text-align:center;
+  font-size:20px;
+  font-weight:600;
+  border-bottom:1px solid #111;
+}
+
+.card{
+  background:#0a0a0a;
+  margin:14px;
+  padding:18px;
+  border-radius:16px;
+  border:1px solid #111;
+}
+
+h3{
+  margin:0 0 10px 0;
+  font-weight:600;
+}
+
+#plan{
+  font-size:22px;
+  margin:12px 0;
+}
+
+.meta{
+  font-size:13px;
+  color:#888;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  margin-top:10px;
+  border-radius:12px;
+  border:none;
+  font-weight:600;
+  font-size:15px;
+}
+
+.primary{
+  background:#fff;
+  color:#000;
+}
+
+.secondary{
+  background:#111;
+  color:#fff;
+}
+
+.accent{
+  background:#2563eb;
+  color:#fff;
+}
+
+.small{
+  font-size:13px;
+  color:#aaa;
+  margin-top:10px;
+}
+
+#budget{
+  font-size:20px;
+  margin:10px 0;
+}
+</style>
+</head>
+
+<body>
+
+<header>🧠 Cancún AI — Black Edition</header>
+
+<div class="card">
+<h3>🎯 Plan inteligente</h3>
+<div id="plan">Cargando...</div>
+<div class="meta" id="meta"></div>
+
+<button class="primary" onclick="nextPlan()">Nuevo plan</button>
+<button class="secondary" onclick="goMap()">Abrir en Maps</button>
+</div>
+
+<div class="card">
+<h3>❤️ Favoritos</h3>
+<button class="secondary" onclick="saveFav()">Guardar plan actual</button>
+<div id="favs" class="small"></div>
+</div>
+
+<div class="card">
+<h3>💰 Presupuesto pareja</h3>
+<div id="budget">$0 MXN</div>
+
+<button class="accent" onclick="add(200)">+200</button>
+<button class="accent" onclick="add(500)">+500</button>
+<button class="secondary" onclick="reset()">Reset</button>
+</div>
+
+<script>
+let plans = [
+{name:"🌮 Los de Pescado", type:"comida", cost:200},
+{name:"🏝️ Isla Mujeres", type:"aventura", cost:1000},
+{name:"🌅 Playa Delfines", type:"relax", cost:0},
+{name:"🌆 Palapas noche", type:"local", cost:150},
+{name:"🍤 Fish Fritanga", type:"date", cost:400}
+];
+
+let current = {};
+let total = 0;
+let favs = JSON.parse(localStorage.getItem("favs")||"[]");
+
+function smartPick(){
+let hour = new Date().getHours();
+
+let filtered = plans.filter(p=>{
+if(hour<12) return p.type==="relax"||p.type==="comida";
+if(hour<18) return p.type==="aventura";
+return p.type==="date"||p.type==="local";
+});
+
+return filtered[Math.floor(Math.random()*filtered.length)];
+}
+
+function nextPlan(){
+current = smartPick();
+document.getElementById("plan").innerText = current.name;
+document.getElementById("meta").innerText =
+"Tipo: "+current.type+" • ~$"+current.cost+" MXN";
+}
+
+function goMap(){
+window.open("https://www.google.com/maps/search/"+current.name);
+}
+
+function add(val){
+total+=val;
+document.getElementById("budget").innerText="$"+total+" MXN";
+}
+
+function reset(){
+total=0;
+document.getElementById("budget").innerText="$0 MXN";
+}
+
+function saveFav(){
+if(!current.name) return;
+favs.push(current.name);
+localStorage.setItem("favs",JSON.stringify(favs));
+renderFavs();
+}
+
+function renderFavs(){
+document.getElementById("favs").innerHTML = favs.join("<br>");
+}
+
+nextPlan();
+renderFavs();
+</script>
+
+</body>
+</html>
